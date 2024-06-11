@@ -1,5 +1,5 @@
+# code: language=ansible
 corp_edge:
   hosts:
     10.139.2.19
-
     
