@@ -1,0 +1,20 @@
+corp_core:
+  hosts:
+
+corp_edge:
+  hosts:
+
+corp_firewall:
+  hosts:
+
+
+corp_application:
+  hosts:
+
+corp_network:
+  children:
+    corp_core:
+    corp_application:
+    corp_edge:
+    corp_firewall:
+      
