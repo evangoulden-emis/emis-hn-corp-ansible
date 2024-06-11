@@ -3,3 +3,5 @@ corp_edge:
   hosts:
     BUILDROOM:
       ansible_host: 10.139.2.19
+    LOCALHOST:
+      ansible_host: 127.0.0.1
