@@ -1,0 +1,6 @@
+- name: Gather Facts
+  gather_facts: true
+  tasks:
+    - name: Ensure API key is present in config file
+      ansible.builtin.debug:
+        tasks

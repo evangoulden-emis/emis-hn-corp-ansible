@@ -3,5 +3,11 @@ corp_edge:
   hosts:
     BUILDROOM:
       ansible_host: 10.139.2.19
+      ansible_connection: ssh
+      ansible_ssh_user: netadmin
+      ansible_ssh_pass: 5h1th0tPa55w0rd!!
     LOCALHOST:
       ansible_host: 127.0.0.1
+      ansible_connection: ssh
+      ansible_ssh_user: evangoulden
+      ansible_ssh_pass: 5h1th0tPa55w0rd!!
