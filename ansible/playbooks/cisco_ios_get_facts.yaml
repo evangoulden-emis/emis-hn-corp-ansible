@@ -1,0 +1,9 @@
+---
+- name: Gather Facts from Cisco IOS Devices
+  hosts: corp_edge
+  gather_facts: true
+  tasks:
+    - name: Gather facts from Cisco IOS Devices
+      ansible.builtin.ios_facts:
+        msg:
+        - "{{ansible_facts}}"
