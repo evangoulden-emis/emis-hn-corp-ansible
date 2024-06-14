@@ -1,6 +1,6 @@
 ---
 - name: Gather Facts from Cisco IOS Devices
-  hosts: corp_edge
+  hosts: corp_edge_cisco
   gather_facts: true
   tasks:
     - name: Gather facts from Cisco IOS Devices
