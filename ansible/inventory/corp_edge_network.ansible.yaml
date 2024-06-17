@@ -3,12 +3,14 @@ corp_edge_cisco:
   vars:
     ansible_become: true
     ansible_become_method: enable
-    ansible_become_password:
+    ansible_become_password: "{{ default_enable }}"
     ansible_network_os: cisco.ios.ios
     ansible_connection: ansible.netcommon.network_cli
+    ansible_ssh_user: "{{ netadmin_username }}"
+    ansible_ssh_pass: "{{ netadmin_password }}"
   hosts:
     BUILDROOM:
       ansible_host: 10.139.2.19
-      ansible_connection: ssh
-      ansible_ssh_user: netadmin
-      ansible_ssh_pass: 5h1th0tPa55w0rd!!
+
+    FG-SB-2960X-B:
+      ansible_host: 10.139.2.6

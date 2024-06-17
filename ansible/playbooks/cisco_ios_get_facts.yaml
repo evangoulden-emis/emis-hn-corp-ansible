@@ -2,8 +2,27 @@
 - name: Gather Facts from Cisco IOS Devices
   hosts: corp_edge_cisco
   gather_facts: true
+  vars_files: emis-hn-corp-ansible/ansible/groupvars/default.yaml
   tasks:
-    - name: Gather facts from Cisco IOS Devices
-      ansible.builtin.ios_facts:
-        msg:
-        - "{{ansible_facts}}"
+  - name: Gather facts
+    cisco.ios.ios_facts:
+      gather_subset: config
+
+  - name: Write facts to disk using a template
+    ansible.builtin.debug:
+      msg:
+      - "IOS device info:"
+      - "Hostname: {{ ansible_net_hostname }}"
+      - "Version: {{ ansible_net_version }}"
+      - "Model: {{ ansible_net_model }}"
+      - "Serial: {{ ansible_net_serialnum }}"
+
+  - name: Create Directory to Store Backups
+    file:
+      path: "switch-facts/{{ ansible_net_hostname }}"
+      state: directory
+
+  - name: Copy config content to File
+    ansible.builtin.copy:
+      content: "{{ ansible_net_config }}"
+      dest: "switch-facts/{{ ansible_net_hostname }}/{{ansible_net_hostname}}.cfg"
