@@ -1,8 +1,8 @@
 ---
 - name: Gather Facts from Cisco IOS Devices
-  hosts: corp_edge_cisco
+  hosts: corp_edge_cisco, corp_core_cisco
   gather_facts: true
-  vars_files: emis-hn-corp-ansible/ansible/groupvars/default.yaml
+  vars_files: ../groupvars/default.yaml
   tasks:
   - name: Gather facts
     cisco.ios.ios_facts:

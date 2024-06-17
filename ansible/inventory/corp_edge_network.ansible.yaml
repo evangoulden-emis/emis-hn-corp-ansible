@@ -11,6 +11,5 @@ corp_edge_cisco:
   hosts:
     BUILDROOM:
       ansible_host: 10.139.2.19
-
     FG-SB-2960X-B:
       ansible_host: 10.139.2.6

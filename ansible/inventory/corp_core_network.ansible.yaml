@@ -1,16 +1,14 @@
-corp_core:
+corp_core_cisco:
   vars:
     ansible_become: true
     ansible_become_method: enable
-    ansible_become_password: heisatwat
+    ansible_become_password: "{{ default_enable }}"
     ansible_network_os: cisco.ios.ios
     ansible_connection: ansible.netcommon.network_cli
+    ansible_ssh_user: "{{ netadmin_username }}"
+    ansible_ssh_pass: "{{ netadmin_password }}"
   hosts:
     EGTON-CORE-3850:
       ansible_host: 10.141.10.248
-      ansible_ssh_user:
-      ansible_ssh_pass:
     FULFORD-CORE-3850:
       ansible_host: 10.139.2.96
-      ansible_ssh_user:
-      ansible_ssh_pass:
