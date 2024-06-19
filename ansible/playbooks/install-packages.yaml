@@ -1,0 +1,13 @@
+---
+- name: Install Standard Server Packages
+  hosts: corp_linux
+  tasks:
+    - name: Package installation
+      become: true
+      ansible.builtin.apt:
+        pkg:
+          - sysstat
+          - nginx
+          - mariadb-server
+        state: present
+        update_cache: true

@@ -1,0 +1,9 @@
+---
+corp_linux:
+  vars:
+  hosts:
+    kali_linux:
+      ansible_connection: ssh
+      ansible_host: 10.211.55.4
+      ansible_ssh_user: "{{linux_username}}"
+      ansible_ssh_pass: "{{ linux_password }}"
