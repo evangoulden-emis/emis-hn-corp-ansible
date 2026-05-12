@@ -1,0 +1,63 @@
+- name: Cisco Network Hardening Deployment
+  hosts: cisco_ios
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  
+  tasks:
+    - name: Basic System Hardening (IOS/XE)
+      cisco.ios.ios_system_hardening:
+        ntp_servers: "{{ ntp_servers }}"
+        dns_servers: "{{ dns_servers }}"
+        domain_name: "{{ domain_name }}"
+        mgmt_acl_name: "{{ mgmt_acl_name }}"
+        ssh_version: "{{ ssh_version }}"
+    - name: Configure management ACLs on IOS devices
+      cisco.ios.ios_config:
+        parent: "ip access-list standard {{ mgmt_acl_name }}"
+        lines:
+          - remark Managed by Ansible - Authorized Management Solutions
+          - permit host {{ ansible_host }}
+          - deny any log
+        save_when: modified
+    - name: Configure NTP servers on IOS devices
+      cisco.ios.ios_config:
+        lines:
+          - ntp server {{ item }}
+        with_items: "{{ ntp_servers }}"
+        save_when: modified
+    - name: Configure DNS servers on IOS devices
+      cisco.ios.ios_config:
+        lines:
+          - ip name-server {{ item }}
+        with_items: "{{ dns_servers }}"
+        save_when: modified
+    - name: Configure domain name on IOS devices
+      cisco.ios.ios_config:
+        lines:
+          - ip domain-name {{ domain_name }}
+        save_when: modified
+    - name: Disable unused services on IOS devices
+      cisco.ios.ios_config:
+        lines:
+          - no ip http server
+          - no ip http secure-server
+          - no ip finger
+          - no ip bootp server
+          - no service tcp-small-servers
+          - no service udp-small-servers
+          - no service dhcp
+          - no service pad
+          - ip ssh version {{ ssh_version }}
+        save_when: modified
+    - name: Secure VTY lines on IOS devices
+      cisco.ios.ios_config:
+        lines:
+          - line vty 0 4
+          - transport input ssh
+          - access-class {{ mgmt_acl_name }} in
+          - exec-timeout 15 0
+          - logging synchronous
+        save_when: modified
+    - name: Save configuration on IOS devices
+      cisco.ios.ios_config:
+        save_when: modified
