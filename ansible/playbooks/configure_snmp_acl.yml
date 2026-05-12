@@ -1,0 +1,29 @@
+- name: Configure SNMPv3 and ACLs on IOS Devices
+  hosts: cisco_ios
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+
+  vars:
+    snmp_acl_name: "EMIS-NET-SNMP-POLLERS"
+    snmp_user_pass: "snmpuser"
+    snmp_priv_pass: "snmppriv"
+    snmp_server_ip: "192.168.153.241"
+  
+  tasks:
+    - name: Push snmpv3 user configuration to IOS devices
+      cisco.ios.ios_config:
+        lines:
+          - snmp-server view SNMPV3-VIEW iso included
+          - snmp-server group SNMPV3-GROUP v3 auth read SNMPV3-VIEW access {{ snmp_acl_name }}
+          - snmp-server user snmpuser SNMPV3-GROUP v3 auth sha {{ snmp_user_pass }} priv aes 128 {{ snmp_priv_pass }}
+          - snmp-server host {{ snmp_server_ip }} version 3 priv snmpuser
+        save_when: modified
+
+    - name: Push ACL configuration to IOS devices
+      cisco.ios.ios_config:
+        parent: "ip access-list standard {{ snmp_acl_name }}"
+        lines:
+          - remark Managed by Ansible - Authorized Management Solutions
+          - permit host {{ snmp_server_ip }}
+          - deny any log
+        save_when: modified
