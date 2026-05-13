@@ -1,0 +1,14 @@
+- name: Backup running configuration and save to file
+  hosts: cisco_devices
+  gather_facts: no
+  tasks:
+  - name: Backup running configuration to local controller
+    cisco.ios.ios_config:
+      backup: yes
+      backup_options:
+        filename: "backup_{{ inventory_hostname }}_{{ ansible_date_time.iso8601 }}-running.cfg"
+        dir_path: "/backups/{{ inventory_hostname }}"
+        archive: yes
+        archive_options:
+        format: gz
+        keep: 5
